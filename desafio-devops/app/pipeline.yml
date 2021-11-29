@@ -1,0 +1,17 @@
+pipelines:
+  branches:
+    master:
+      - step:
+          name: build image app
+          services:
+            - docker
+          caches:
+            - docker
+          script:
+            - docker build -t app . 
+            - pipe: atlassian/aws-ecr-push-image:1.4.3
+              variables:
+               AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+               AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+               AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+               IMAGE_NAME: app

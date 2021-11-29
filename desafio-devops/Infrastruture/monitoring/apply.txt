@@ -1,0 +1,10 @@
+set namespace = monitoring
+
+kubectl create namespace %namespace%
+
+helm repo add elastic https://helm.elastic.co
+helm upgrade --install db-monitoring --namespace %namespace% --version 7.15.0 -f elasticsearch.values.yaml elastic/elasticsearch
+helm upgrade --install collector-monitoring --namespace %namespace% --version 7.15.0 -f filebeat.values.yaml elastic/filebeat
+helm upgrade --install portal-monitoring --namespace %namespace% --version 7.15.0 -f kibana.values.yaml elastic/kibana
+helm upgrade --install apm-monitoring --namespace %namespace% --version 7.15.0 -f apm-server.values.yaml elastic/apm-server
+kubectl rollout status -w deployment/portal-monitoring-kibana -n monitoring

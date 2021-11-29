@@ -1,0 +1,7 @@
+set namespace  = cockpit
+
+kubectl create namespace %namespace%
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm upgrade --install prod-db-%namespace% --namespace %namespace% -f postgres.values.yaml bitnami/postgresql
+helm upgrade --install cockpit --namespace %namespace% -f grafana.yaml bitnami/grafana

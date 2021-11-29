@@ -1,0 +1,8 @@
+set namespace = argocd
+
+
+kubectl create namespace %namespace%
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm upgrade --install argo --namespace %namespace% -f argo.yaml argo/argo-cd
+
